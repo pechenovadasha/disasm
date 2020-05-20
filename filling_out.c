@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filling_out.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: croxane <croxane@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/18 16:22:04 by croxane           #+#    #+#             */
+/*   Updated: 2020/05/19 12:11:41 by croxane          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "dis_asm.h"
 
 void	ft_creat_file(t_struct *data)
 {
-	data->fd_creat_file = open(data->file_name, O_WRONLY | O_TRUNC | O_CREAT, S_IREAD | S_IWRITE);
+	data->fd_creat_file = open(data->file_name,
+			O_WRONLY | O_TRUNC | O_CREAT, S_IREAD | S_IWRITE);
 	if (data->fd_creat_file < 0)
 	{
 		write(1, "File not created\n", 17);
@@ -16,7 +29,12 @@ void	ft_creat_file(t_struct *data)
 	write(data->fd_creat_file, " ", 1);
 	write(data->fd_creat_file, data->comment, ft_strlen(data->comment));
 	write(data->fd_creat_file, "\n\n", 2);
-
+	free(data->name);
+	data->name = 0;
+	free(data->comment);
+	data->comment = 0;
+	free(data->file_name);
+	data->file_name = 0;
 }
 
 char	*ft_strjoin_sp(char **str, char *buf, size_t len)
@@ -30,5 +48,6 @@ char	*ft_strjoin_sp(char **str, char *buf, size_t len)
 	ft_strdel(str);
 	*str = ft_strdup(newstr);
 	ft_strdel(&newstr);
+	free(buf);
 	return (*str);
 }
